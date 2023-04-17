@@ -1,9 +1,15 @@
+import 'package:api_provider/bloc_test/data/repo/post_repo.dart';
+import 'package:api_provider/bloc_test/presentation/home_screen.dart';
 import 'package:api_provider/provider/todo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async{
   runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  PostRepo postRepo = PostRepo();
+  postRepo.fetchPosts();
+
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +25,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(),
+        home: const HomeScreen(),
       ),
     );
   }

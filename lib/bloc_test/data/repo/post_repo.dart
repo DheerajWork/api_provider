@@ -11,7 +11,7 @@ class PostRepo{
 
   void fetchPosts() async{
     try{
-      Response response = (await api.sendRequest.get("/posts",
+      Response response = (await api.sendRequest.get("api/v1/driverUserRegister",
         // data: {
         //   "mobileCredentials": {
         //     "username": "sBw28NJNgmD3R6qt3tzewQ==",

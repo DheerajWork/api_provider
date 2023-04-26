@@ -6,7 +6,7 @@ class API{
   Dio _dio = Dio();
 
   API(){
-    _dio.options.baseUrl = "http://webdevapi.hoofresh.net:8443/hoofresh";
+    _dio.options.baseUrl = "http://webdevapi.hoofresh.net:8443/hoofresh/";
     _dio.interceptors.add(PrettyDioLogger());
   }
 

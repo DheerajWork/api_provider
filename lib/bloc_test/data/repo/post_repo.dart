@@ -1,44 +1,50 @@
-import 'dart:math';
-
+import 'dart:convert';
 import 'package:api_provider/bloc_test/data/api/api.dart';
-import 'package:encrypt/encrypt.dart'as encrypt;
+import 'package:dio/dio.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:encrypt/encrypt.dart';
-import 'package:http/http.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:http_parser/http_parser.dart';
 
-class PostRepo{
-
+class PostRepo {
   API api = API();
 
-  void fetchPosts() async{
-    try{
-      Response response = (await api.sendRequest.get("api/v1/driverUserRegister",
-        // data: {
-        //   "mobileCredentials": {
-        //     "username": "sBw28NJNgmD3R6qt3tzewQ==",
-        //     "password": "oINnHsfJRmXHnaFML+ITZw==",
-        //     "deviceType": "Lt6pJoQQtI8mc8tJhmEpSg==",
-        //     "deviceId": "PDaH0I6wXk2+0mrovDcY3dM3kAwrmzT2ttlV5fImLJg=",
-        //     "appVersion": "1e2hD0yZ34pWNJA9DbvZFA=="
-        //   },
-        //   "user": {
-        //     "username": "TqAqKjtY2h2eLeDHwfWYFA=="
-        //   },
-        //   "customerDetails": {
-        //     "fullName": "yaEiNIFZeQg/TBgYtKO1NMrSeeeZ6CZdExibmQMnMOM==",
-        //     "email": "QCPCiA6LhQ318dn0PkUT6Q==",
-        //     "gender": "dbk1zdqbWr6Op/X/7NTfYg==",
-        //     "fcmToken": "dsfsdgdrgree/hgfHGdhgf/hgjdjgfdterw/=="
-        //   }
-        // },
-      )) as Response;
-      log(response.body as num);
-    } catch(e){
+   fetchPosts({
+    String? username
+  }) async {
+    try {
+      Response response =
+          (await api.sendRequest.post("api/v1/driverUserAppLogin",
+            data: {
+              "mobileCredentials": {
+                "username": "sBw28NJNgmD3R6qt3tzewQ==",
+                "password": "oINnHsfJRmXHnaFML+ITZw==",
+                "deviceType": "Lt6pJoQQtI8mc8tJhmEpSg==",
+                "deviceId": "PDaH0I6wXk2+0mrovDcY3dM3kAwrmzT2ttlV5fImLJg=",
+                "appVersion": "1e2hD0yZ34pWNJA9DbvZFA=="
+              },
+              "appLogin": {
+                "username": encryptionString(username!)}
+            },
+      ));
+      // log(response.body as num);
+      print(response.data);
+    } catch (e) {
       throw e;
     }
   }
-
 }
 
+decryptString(String text) {
+  final iv = IV.fromLength(128);
+  final key = encrypt.Key.fromUtf8("ghfthgytlkmmgftr");
+
+  final encrypter = Encrypter(AES(key, mode: AESMode.ecb, padding: 'PKCS7'));
+
+  final decrypted = encrypter.decrypt(Encrypted.fromBase64(text), iv: iv);
+
+  return decrypted;
+}
 
 String encryptionString(String plainText) {
   final iv = IV.fromLength(128);
